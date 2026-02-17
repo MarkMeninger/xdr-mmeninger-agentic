@@ -1,0 +1,93 @@
+# Requirements Output
+# Generated from requirements-spec.yaml
+
+----------------------------------------------------------------------------
+Description
+----------------------------------------------------------------------------
+
+Syntactically matching CQL examples using $VAR_NAME placeholders. Substitute variables
+with appropriate values before execution. Based on Taegis CQL docs in data/taegis-docs
+and field names from data/taegis-schemas/nids.proto.
+
+Variable bindings (field names from nids.proto): Use these as values when a variable
+is set to a field name (sort field, filter field, or fields selector). Identity/sensor:
+sensor_type, sensor_id, sensor_tenant, sensor_event_id, normalizer, host_id. Time:
+event_time_usec, ingest_time_usec. Addresses/ports: source_address, destination_address,
+source_port, destination_port. NIDS rule/alert: signature_id, generator_id, policy_id,
+message, classification, priority, action, blocked, impact_flag. Protocol/packet:
+protocol, icmp_type, icmp_code, ttl, flags, ip_len, tcp_len, dgm_len. User/app:
+source_username, destination_username, application_name. Other: direction, log_type,
+countermeasure_author, event_id, event_ref, vlan, mpls_label, original_data.
+
+Examples:
+
+  Example 1: NIDS by sensor type and time:
+    from nids where sensor_type = $SENSOR_TYPE earliest = $EARLIEST
+
+  Example 2: NIDS filter by field name variable:
+    from nids where $FILTER_FIELD = $FILTER_VALUE earliest = $EARLIEST
+
+  Example 3: NIDS sort by field name variable:
+    from nids where sensor_type = $SENSOR_TYPE earliest = $EARLIEST | sort $SORT_FIELD $SORT_ORDER
+
+  Example 4: NIDS source/destination and time (homenet-style):
+    from nids
+    where (sensor_type = $SENSOR_TYPE and blocked = $BLOCKED and source_address IN $INTERNAL_CIDRS and destination_address !IN $INTERNAL_CIDRS) earliest = $EARLIEST latest = $LATEST
+
+  Example 5: NIDS by signature and priority:
+    from nids where signature_id = $SIGNATURE_ID and priority = $PRIORITY earliest = $EARLIEST
+
+  Example 6: NIDS by action and classification:
+    from nids where action = $ACTION and classification = $CLASSIFICATION earliest = $EARLIEST
+
+  Example 7: NIDS select which fields to return:
+    from nids where sensor_id = $SENSOR_ID earliest = $EARLIEST | fields $FIELD_LIST
+
+  Example 8: NIDS filter field and value (IN list):
+    from nids where $FILTER_FIELD IN $FILTER_VALUES earliest = $EARLIEST
+
+  Example 9: NIDS by sensor_id list and time window:
+    from nids where sensor_id IN $SENSOR_IDS earliest = $EARLIEST latest = $LATEST
+
+  Example 10: NIDS aggregate by field name variable:
+    from nids where sensor_type = $SENSOR_TYPE earliest = $EARLIEST | aggregate count($GROUP_BY_FIELD) by $GROUP_BY_FIELD
+
+  Example 11: NIDS head/tail with sort by event time:
+    from nids where blocked = $BLOCKED earliest = $EARLIEST | sort event_time_usec desc | head $HEAD_N
+
+  Example 12: NIDS explicit EARLIEST/LATEST (ISO8601):
+    from nids earliest = $EARLIEST latest = $LATEST
+
+  Example 13: NIDS by direction and protocol:
+    from nids where direction = $DIRECTION and protocol = $PROTOCOL earliest = $EARLIEST
+
+  Example 14: NIDS full homenet pattern:
+    FROM nids
+    WHERE ((sensor_type = $SENSOR_TYPE AND blocked = $BLOCKED) AND (sensor_id = $SENSOR_ID AND source_address IN $INTERNAL_CIDRS AND destination_address !IN $INTERNAL_CIDRS))
+    EARLIEST = $EARLIEST AND LATEST = $LATEST
+
+----------------------------------------------------------------------------
+Acceptance Criteria
+----------------------------------------------------------------------------
+
+CQL Variable Set Support: Variables support a set of values: user can define a set of values for a variable (e.g. a list of CIDRs or sensor IDs).
+
+CQL Variable Single Value Timestamp Support: Variables support type timestamp (ISO8601): user can define a variable that holds a single value (timestamp)
+
+CQL Variable Single Value String Support: Variables support type string : user can define a variable that holds a string.
+
+CQL Variable Composable: Variables can be used/referenced within the currently supported CQL functions
+
+CQL Variable Referenceable: User can reference variables in the search clause by name (e.g. $EARLIEST, $PRIVATE_CIDRS).
+
+CQL Variable bound values substituted: Generated or executed query substitutes variable references with the bound values.
+
+CQL Variable binding: User can bind variables to values (e.g. $EARLIEST to '2026-01-05T00:00:00.000Z', $PRIVATE_CIDRS to ('10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16')).
+
+CQL Variable binding validation: User can validate the binding of variables to values (e.g. $EARLIEST is a valid timestamp, $PRIVATE_CIDRS is a valid set of CIDRs).
+
+CQL Variable binding error handling: User can handle errors when binding variables to values (e.g. $EARLIEST is not a valid timestamp, $PRIVATE_CIDRS is not a valid set of CIDRs).
+
+CQL Variable binding logging: User can log the binding of variables to values (e.g. $EARLIEST is bound to '2026-01-05T00:00:00.000Z', $PRIVATE_CIDRS is bound to ('10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16')).
+
+Homenet Report support: A new homenet report is created using variables that allows users to visualize output internal to external traffic

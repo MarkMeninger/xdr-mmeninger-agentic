@@ -1,0 +1,21 @@
+# Requirements Output
+# Generated from requirements-spec.yaml
+
+----------------------------------------------------------------------------
+Description
+----------------------------------------------------------------------------
+
+The system shall support search variables in CQL so that users can
+parameterize queries (e.g. time range, sensor IDs, CIDR sets) and
+reuse the same query with different bindings without editing the
+query text.
+
+----------------------------------------------------------------------------
+Acceptance Criteria
+----------------------------------------------------------------------------
+
+ac-1: User can define a set of values for a variable (e.g. a list of CIDRs or sensor IDs).
+
+ac-2: User can reference variables in the search clause by name (e.g. $EARLIEST, $PRIVATE_CIDRS).
+
+ac-3: Generated or executed query substitutes variable references with the bound values.

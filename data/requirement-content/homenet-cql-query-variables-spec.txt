@@ -1,0 +1,95 @@
+# Homenet CQL query – variable specification
+
+This document defines the variables used in homenet-cql-query-with-variables.txt so the same query can be reused with
+different bindings (e.g. different time ranges, sensors, or internal networks).
+
+## Variable list
+
+| Variable | Type | Description | Example binding |
+|----------|------|-------------|-----------------|
+| $SENSOR_TYPE | single value | NIDS sensor type filter | 'isensor' |
+| $BLOCKED | single value | Block/status filter | 2 |
+| $EARLIEST | single value (ISO8601) | Start of time window (inclusive) | '2026-01-05T00:00:00.000Z' |
+| $LATEST | single value (ISO8601) | End of time window (inclusive) | '2026-01-11T23:59:59.000Z' |
+| $INDIA_SENSOR_ID | single value | Sensor ID for India region | 'iSensor_India' |
+| $INDIA_INTERNAL_CIDRS | set (IN / !IN) | CIDRs defining “internal” for India (source IN, dest !IN) | ('10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16', '182.71.197.82/31', ...) |
+| $AUS_SENSOR_ID | single value | Sensor ID for Australia region | 'iSensor_AUS' |
+| $AUS_INTERNAL_CIDRS | set (IN / !IN) | CIDRs defining “internal” for Australia | ('139.130.128.110/30', '110.174.237.126/29') |
+| $OTHER_SENSOR_IDS | set (IN) | Sensor IDs for regions using private CIDRs only | ('iSensor_Brazil', 'isensor_Hayward_10G', 'iSensor_Mexico', ...) |
+| $PRIVATE_CIDRS | set (IN / !IN) | Private RFC1918 ranges used for “other” sensors | ('10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16') |
+
+```json
+[
+  {
+    "variable": "$SENSOR_TYPE",
+    "type": "single value",
+    "description": "NIDS sensor type filter",
+    "example_binding": "'isensor'"
+  },
+  {
+    "variable": "$BLOCKED",
+    "type": "single value",
+    "description": "Block/status filter",
+    "example_binding": "2"
+  },
+  {
+    "variable": "$EARLIEST",
+    "type": "single value (ISO8601)",
+    "description": "Start of time window (inclusive)",
+    "example_binding": "'2026-01-05T00:00:00.000Z'"
+  },
+  {
+    "variable": "$LATEST",
+    "type": "single value (ISO8601)",
+    "description": "End of time window (inclusive)",
+    "example_binding": "'2026-01-11T23:59:59.000Z'"
+  },
+  {
+    "variable": "$INDIA_SENSOR_ID",
+    "type": "single value",
+    "description": "Sensor ID for India region",
+    "example_binding": "'iSensor_India'"
+  },
+  {
+    "variable": "$INDIA_INTERNAL_CIDRS",
+    "type": "set (IN / !IN)",
+    "description": "CIDRs defining \"internal\" for India (source IN, dest !IN)",
+    "example_binding": "('10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16', '182.71.197.82/31', ...)"
+  },
+  {
+    "variable": "$AUS_SENSOR_ID",
+    "type": "single value",
+    "description": "Sensor ID for Australia region",
+    "example_binding": "'iSensor_AUS'"
+  },
+  {
+    "variable": "$AUS_INTERNAL_CIDRS",
+    "type": "set (IN / !IN)",
+    "description": "CIDRs defining \"internal\" for Australia",
+    "example_binding": "('139.130.128.110/30', '110.174.237.126/29')"
+  },
+  {
+    "variable": "$OTHER_SENSOR_IDS",
+    "type": "set (IN)",
+    "description": "Sensor IDs for regions using private CIDRs only",
+    "example_binding": "('iSensor_Brazil', 'isensor_Hayward_10G', 'iSensor_Mexico', ...)"
+  },
+  {
+    "variable": "$PRIVATE_CIDRS",
+    "type": "set (IN / !IN)",
+    "description": "Private RFC1918 ranges used for \"other\" sensors",
+    "example_binding": "('10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16')"
+  }
+]
+```
+
+## Substitution rules
+
+- **Single value**: Replace $VAR with the literal (e.g. $SENSOR_TYPE → 'isensor'). Keep quotes for strings.
+- **Set for IN / !IN**: Replace $VAR with a parenthesized, comma-separated list (e.g. $PRIVATE_CIDRS → ('10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16')).
+
+## Example: binding and reuse
+
+- Change time window: set $EARLIEST and $LATEST to new dates.
+- Add/remove a sensor in “other” region: update $OTHER_SENSOR_IDS.
+- Change India internal networks: update $INDIA_INTERNAL_CIDRS only; logic (source IN internal, dest !IN internal) stays the same.

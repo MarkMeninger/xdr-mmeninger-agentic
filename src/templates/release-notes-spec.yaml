@@ -1,0 +1,52 @@
+# Release notes output specification
+# Defines the structure of release notes content (e.g. data/taegis-docs/release_notes.txt).
+# All three content types are optional; include only the sections that apply.
+
+name: release-notes-spec
+version: "1.0"
+description: "Optional support for Features, Fixes, and Docs sections in release notes."
+
+sections:
+  - id: features
+    title: Features
+    required: false
+    description: "New or enhanced product capabilities."
+    items:
+      - id: optional
+        # Each item has a title and body (description).
+        # title: short heading (e.g. 'IDR Credential Compromise Now Named Dark Web Intelligence')
+        # body: paragraph(s) describing the feature
+        title: ""
+        body: ""
+
+  - id: fixes
+    title: Fixes
+    required: false
+    description: "Resolved issues, bugs, or corrections."
+    items:
+      - id: optional
+        title: ""
+        body: ""
+
+  - id: docs
+    title: Docs
+    required: false
+    description: "Documentation updates, guides, or help changes."
+    items:
+      - id: optional
+        title: ""
+        body: ""
+
+# Content file shape (for generators or manual authoring):
+# features:
+#   - title: "Feature title"
+#     body: "Description of the feature."
+# fixes:
+#   - title: "Fix title"
+#     body: "Description of the fix."
+# docs:
+#   - title: "Doc title"
+#     body: "Description of the doc update."
+#
+# Omit any section (features, fixes, docs) that has no items.
+# Each section is optional; at least one section typically present.

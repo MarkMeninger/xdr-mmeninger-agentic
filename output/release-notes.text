@@ -1,0 +1,10 @@
+Features
+
+CQL Search Variables: Queries can now use variables (e.g. $EARLIEST, $SENSOR_TYPE) so users can parameterize and reuse the same query with different bindings.
+
+Homenet Report: A new homenet report uses variables to visualize internal-to-external traffic. Users can set internal CIDR lists and time range per sensor or region.
+
+
+Docs
+
+Search Variables (variables.md): Documentation for CQL search variables now includes variable syntax, binding rules, and NIDS field name reference. See variables.md in the output folder.

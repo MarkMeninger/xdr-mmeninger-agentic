@@ -1,0 +1,25 @@
+// Homenet CQL query - parameterized with search variables for reusability
+// Variables are indicated by $VAR_NAME. Substitute each with the appropriate value set or literal before execution.
+// See homenet-cql-query-variables-spec.txt for variable definitions and example bindings.
+
+FROM nids
+WHERE (
+  (sensor_type = $SENSOR_TYPE AND blocked = $BLOCKED)
+  AND (
+    (
+      (sensor_id = $INDIA_SENSOR_ID
+        AND source_address IN $INDIA_INTERNAL_CIDRS
+        AND destination_address !IN $INDIA_INTERNAL_CIDRS)
+      OR
+      (sensor_id = $AUS_SENSOR_ID
+        AND source_address IN $AUS_INTERNAL_CIDRS
+        AND destination_address !IN $AUS_INTERNAL_CIDRS)
+    )
+    OR
+    (sensor_id IN $OTHER_SENSOR_IDS
+      AND source_address IN $PRIVATE_CIDRS
+      AND destination_address !IN $PRIVATE_CIDRS)
+  )
+)
+EARLIEST = $EARLIEST
+AND LATEST = $LATEST

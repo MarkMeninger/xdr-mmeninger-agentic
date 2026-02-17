@@ -1,0 +1,130 @@
+# CQL variable examples
+# Syntactically matching examples using $VAR_NAME placeholders.
+# Substitute variables with appropriate values before execution.
+# Based on Taegis CQL docs in data/taegis-docs and field names from data/taegis-schemas/nids.proto.
+
+-------------------------------------------------------------------------------
+Variable bindings: field names from nids.proto (taegis-schemas)
+-------------------------------------------------------------------------------
+Use these as values when a variable is set to a *field name* (e.g. sort field,
+filter field, or fields selector). All names below are valid NIDS event fields.
+
+  Identity / sensor:  sensor_type, sensor_id, sensor_tenant, sensor_event_id,
+                      normalizer, host_id, resource_id, tenant_id
+  Time:               event_time_usec, ingest_time_usec
+  Addresses / ports:  source_address, destination_address, source_port,
+                      destination_port
+  NIDS rule/alert:    signature_id, generator_id, policy_id, message,
+                      classification, priority, action, blocked, impact_flag
+  Protocol / packet:  protocol, icmp_type, icmp_code, ttl, flags, ip_len,
+                      tcp_len, dgm_len
+  User / app:         source_username, destination_username, application_name
+  Other:              direction, log_type, countermeasure_author, event_id,
+                      event_ref, vlan, mpls_label, original_data
+
+-------------------------------------------------------------------------------
+Example 1: NIDS by sensor type and time (field names as context)
+-------------------------------------------------------------------------------
+from nids where sensor_type = $SENSOR_TYPE earliest = $EARLIEST
+# e.g. $SENSOR_TYPE = 'isensor'; $EARLIEST = -24h
+# Field sensor_type from nids.proto (line 23).
+
+-------------------------------------------------------------------------------
+Example 2: NIDS filter by field name variable (blocked, source/dest address)
+-------------------------------------------------------------------------------
+from nids where $FILTER_FIELD = $FILTER_VALUE earliest = $EARLIEST
+# Set $FILTER_FIELD to a nids.proto field name, e.g. blocked, source_address,
+# destination_address, signature_id, sensor_id, message, classification, action.
+
+-------------------------------------------------------------------------------
+Example 3: NIDS sort by field name variable
+-------------------------------------------------------------------------------
+from nids where sensor_type = $SENSOR_TYPE earliest = $EARLIEST | sort $SORT_FIELD $SORT_ORDER
+# Set $SORT_FIELD to event_time_usec or ingest_time_usec (supported for multi-type;
+# single-type can sort by any field). $SORT_ORDER = asc | desc.
+
+-------------------------------------------------------------------------------
+Example 4: NIDS source/destination and time (homenet-style)
+-------------------------------------------------------------------------------
+from nids
+where (
+  sensor_type = $SENSOR_TYPE
+  and blocked = $BLOCKED
+  and source_address IN $INTERNAL_CIDRS
+  and destination_address !IN $INTERNAL_CIDRS
+) earliest = $EARLIEST latest = $LATEST
+# Fields source_address, destination_address from nids.proto (116, 117).
+# blocked: 1=NotBlocked, 2=Blocked, 3=WouldHaveBlocked (nids.proto 75-76).
+
+-------------------------------------------------------------------------------
+Example 5: NIDS by signature and priority (field names from proto)
+-------------------------------------------------------------------------------
+from nids where signature_id = $SIGNATURE_ID and priority = $PRIORITY earliest = $EARLIEST
+# signature_id, priority from nids.proto (101, 106).
+
+-------------------------------------------------------------------------------
+Example 6: NIDS by action and classification
+-------------------------------------------------------------------------------
+from nids where action = $ACTION and classification = $CLASSIFICATION earliest = $EARLIEST
+# action, classification from nids.proto (107, 105).
+
+-------------------------------------------------------------------------------
+Example 7: NIDS select which fields to return (field name list variable)
+-------------------------------------------------------------------------------
+from nids where sensor_id = $SENSOR_ID earliest = $EARLIEST | fields $FIELD_LIST
+# Set $FIELD_LIST to comma-separated nids.proto field names, e.g.:
+# source_address, destination_address, event_time_usec, message, signature_id.
+# API only (see functions.md).
+
+-------------------------------------------------------------------------------
+Example 8: NIDS filter field and value (generic filter by any indexed field)
+-------------------------------------------------------------------------------
+from nids where $FILTER_FIELD IN $FILTER_VALUES earliest = $EARLIEST
+# $FILTER_FIELD = sensor_id | source_address | destination_address | message |
+# classification | action | log_type | etc. $FILTER_VALUES = ('val1','val2').
+
+-------------------------------------------------------------------------------
+Example 9: NIDS by sensor_id list and time window
+-------------------------------------------------------------------------------
+from nids where sensor_id IN $SENSOR_IDS earliest = $EARLIEST latest = $LATEST
+# sensor_id from nids.proto (29).
+
+-------------------------------------------------------------------------------
+Example 10: NIDS aggregate by field name variable
+-------------------------------------------------------------------------------
+from nids where sensor_type = $SENSOR_TYPE earliest = $EARLIEST | aggregate count($GROUP_BY_FIELD) by $GROUP_BY_FIELD
+# Set $GROUP_BY_FIELD to a NIDS field name, e.g. source_address,
+# destination_address, signature_id, classification, sensor_id, message.
+
+-------------------------------------------------------------------------------
+Example 11: NIDS head/tail with sort by event time
+-------------------------------------------------------------------------------
+from nids where blocked = $BLOCKED earliest = $EARLIEST | sort event_time_usec desc | head $HEAD_N
+# event_time_usec from nids.proto (35). Use ingest_time_usec for ingest order.
+
+-------------------------------------------------------------------------------
+Example 12: NIDS explicit EARLIEST/LATEST (ISO8601)
+-------------------------------------------------------------------------------
+from nids earliest = $EARLIEST latest = $LATEST
+# e.g. $EARLIEST = '2026-01-05T00:00:00.000Z', $LATEST = '2026-01-11T23:59:59.000Z'.
+
+-------------------------------------------------------------------------------
+Example 13: NIDS by direction and protocol (field names from proto)
+-------------------------------------------------------------------------------
+from nids where direction = $DIRECTION and protocol = $PROTOCOL earliest = $EARLIEST
+# direction, protocol from nids.proto (163, 122). direction: INBOUND, OUTBOUND,
+# CLIENT_TO_SERVER, SERVER_TO_CLIENT. protocol: e.g. 6 (TCP), 17 (UDP).
+
+-------------------------------------------------------------------------------
+Example 14: NIDS full homenet pattern (sensor + internal CIDRs)
+-------------------------------------------------------------------------------
+FROM nids
+WHERE (
+  (sensor_type = $SENSOR_TYPE AND blocked = $BLOCKED)
+  AND (
+    (sensor_id = $SENSOR_ID AND source_address IN $INTERNAL_CIDRS AND destination_address !IN $INTERNAL_CIDRS)
+  )
+)
+EARLIEST = $EARLIEST AND LATEST = $LATEST
+# All field names (sensor_type, blocked, sensor_id, source_address,
+# destination_address) from data/taegis-schemas/nids.proto.

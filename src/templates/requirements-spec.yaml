@@ -1,0 +1,36 @@
+# Proof-of-concept: Requirements output specification
+# Defines the structure of generated requirements content.
+# Re-generate content when this spec changes.
+
+name: requirements-output-spec
+version: "1.0"
+
+sections:
+  - id: description
+    title: Description
+    required: true
+    # Content for this section can be:
+    #   - A string: used as the description body.
+    #   - An object with optional keys:
+    #       body: string (main description text)
+    #       examples: list of strings, or list of { label: string, text: string }
+    #     When "examples" is provided, they are rendered under an "Examples" subheading.
+    content_shape:
+      body: optional string
+      examples: optional list  # each item: string, or { label: string, text: string }
+
+  - id: acceptance_criteria
+    title: Acceptance Criteria
+    required: true
+    # List of criteria; each can have id, statement, and optional priority
+    items:
+      - id: ac-1
+        statement: ""
+      - id: ac-2
+        statement: ""
+
+# Optional: add more section types here for future output specifications
+# - id: assumptions
+#   title: Assumptions
+# - id: out_of_scope
+#   title: Out of Scope

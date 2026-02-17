@@ -1,0 +1,51 @@
+# Template: structure of documentation files in data/taegis-docs
+# Use this when creating or validating Taegis CQL documentation under taegis-docs.
+
+name: taegis-doc-structure
+version: "1.0"
+description: "Expected structure of Markdown files in the taegis-docs folder."
+
+file_convention:
+  extension: .md
+  location: data/taegis-docs
+  # Current files: examples.md, string_literals.md, arrays.md, aggregations.md, functions.md
+
+structure:
+  - element: title
+    level: "###"
+    required: true
+    description: "Single top-level heading (### Topic Name) at the start of the file."
+
+  - element: subsection
+    level: "####"
+    required: false
+    repeat: true
+    description: "Optional subsections (#### Subsection name) for sub-topics or named features."
+
+  - element: body
+    description: "Paragraphs of explanatory text. May use **bold**, _italic_, `inline code`, and HTML entities (e.g. &#8217; for apostrophe)."
+
+  - element: list
+    description: "Bullet (-) or numbered lists for options, syntax parts, or steps."
+
+  - element: table
+    description: "Optional Markdown tables (| col | col |) for operators, parameters, or reference."
+
+  - element: code_block
+    indent: 4
+    description: "CQL examples and syntax in 4-space-indented blocks. No fenced code (```) in current docs."
+
+  - element: callout
+    syntax: "!!! Note"
+    description: "Optional callout blocks (!!! Note followed by indented content) for caveats or API-only behavior."
+
+  - element: example_label
+    inline: "**Example:**"
+    description: "Optional inline label before a code block (e.g. **Example:** Query for...)."
+
+content_pattern:
+  - "Intro paragraph(s) describing the topic."
+  - "Optional syntax or usage summary (inline `code` or code block)."
+  - "Subsections (####) for each sub-topic with description + code examples."
+  - "Optional **Example:** or **Examples:** followed by one or more code blocks."
+  - "Optional !!! Note for restrictions (e.g. API only, not supported for detections)."

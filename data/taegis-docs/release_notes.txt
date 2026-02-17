@@ -1,0 +1,15 @@
+Features
+
+IDR Credential Compromise Now Named Dark Web Intelligence: The Credential Compromise page of IDR is now named Dark Web Intelligence.
+
+Threat Lineage: The Lineage view in event details has been enhanced with Key Activities and Related Events sub-tabs.
+
+Fixes
+
+Accessing Sophos Central: Fixed an issue where clicking the Sophos Central button on the Endpoint Agents Summary page could fail to open Sophos Central in some environments.
+
+Docs
+
+IDR Integration Guide: The documentation for integrating IDR now includes details on how to complete setup if initial admin consent fails. For more information, see the IDR Integration Guide.
+
+Taegis MDR Proactive Response and Automation Playbooks: The Proactive Response and Automations Playbooks documentation now includes guidance on playbook action pre-authorization for Proactive Response. When using Playbooks with Proactive Response, you can pre-authorize only one response action per action type. For details, see Proactive Response Actions Overview, and Configured Playbooks.

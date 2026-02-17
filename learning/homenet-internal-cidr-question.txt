@@ -1,0 +1,21 @@
+In the context of your homenet query and variable spec:
+
+- **Homenet** is the **use case / scenario**: "traffic that originates from
+  networks we treat as internal (or 'home') and goes to the rest of the
+  internet." So "homenet" = outbound internal→external traffic you care
+  about (e.g. for monitoring or blocking).
+
+- **Internal CIDRs** are the **concrete network ranges** that define what
+  "internal" (or "home") means in that scenario. They're the CIDR blocks
+  you put in the source_address IN ... and destination_address !IN ...
+  parts of the query. Examples from your spec:
+  - **India**: $INDIA_INTERNAL_CIDRS (private ranges + India-specific CIDRs)
+  - **Australia**: $AUS_INTERNAL_CIDRS
+  - **Other regions**: $PRIVATE_CIDRS (e.g. 10.0.0.0/8, 172.16.0.0/12,
+    192.168.0.0/16)
+
+So: **homenet** = what you're looking for (internal→external traffic);
+**internal CIDRs** = the set of networks you're calling "internal" for
+that homenet query. Different regions/sensors can use different internal
+CIDR sets (India vs AUS vs private-only) while still all being "homenet"
+queries.

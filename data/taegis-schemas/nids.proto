@@ -1,0 +1,220 @@
+syntax = "proto3";
+
+package scwx;
+
+import "code.8labs.io/platform/schemas/core/common/ingest/ingest.proto";
+import "code.8labs.io/platform/schemas/core/common/types.proto";
+
+option go_package = "nids";
+option java_package = "com.secureworks.platform.schemas.core.nids";
+
+message Nids {
+  /*** Base event */
+
+  // Full resource string identifying the record.
+  // internal: https://code.8labs.io/project/designs/tree/master/platform/resource-name-format
+  string resource_id = 1 [(search) = {id:true}];
+  // The ID of the tenant that owns this specific to CTPX ID
+  string tenant_id = 2 [(search) = {index:true store:true group:true}];
+  // Constraints on visibility of the record
+  Visibility visibility = 3 [(search) = {}];
+  // Name & version of normalizer that created this record
+  string normalizer = 4 [(search) = {index:true}];
+  // Type of device that generated this event. Ex: redcloak, iSensor
+  string sensor_type = 5 [(search) = {index:true group:true}];
+  // Event ID of original_data assigned by the sensor
+  string sensor_event_id = 6 [(search) = {index:true}];
+  // A customer ID supplied by the application that originated the data. Ex: redloak-domain, ctp-client-id
+  string sensor_tenant = 7 [(search) = {index:true}];
+  // An ID for the data supplied by the application that originated it. Ex: redcloak-agent-id, iSensor Dev IP
+  string sensor_id = 8 [(search) = {index:true type:SENSOR_ID}];
+  // CPE of the platform producing the alert. Ex: cpe:2.3:a:secureworks:redcloak:*:*:*:*:*:*:*:*
+  string sensor_cpe = 9 [(search) = {}];
+  // Original, unadulterated data prior to any transformation.
+  string original_data = 10 [(search) = {}];
+  // Event time in microseconds (µs)
+  uint64 event_time_usec = 11 [(search) = {index:true group:true type:TIMESTAMP_MICROS}];
+  // Ingest time in microseconds (µs).
+  uint64 ingest_time_usec = 12 [(search) = {index:true group:true store:true type:TIMESTAMP_MICROS}];
+  // Specifies the original precision of the time used to populate event_time_usec
+  TimeFidelity event_time_fidelity = 13 [(search) = {}];
+  // Host ID -- unique identifier for the host where the event originated; preferably a uuid
+  // internal: leveraged by assets-v2
+  string host_id = 14 [(search) = {index:true}];
+  // The agent version as string.
+  string sensor_version = 31 [(search) = {index:true}];
+  // The normalizer version (git tag)
+  string normalizer_version = 32 [(search) = {index:true}];
+  // The normalizer revision (git commit hash)
+  string normalizer_revision = 33 [(search) = {index:true}];
+  // Event enrichments
+  Enrichments enrichments = 35 [(search) = {index:true}];
+  // metadata for ingestion-related info
+  ingest.IngestMetadata ingest = 36 [(search) = {index:true}];
+
+  // The generator_id that created the event (snort based  NIDS)
+  uint32 generator_id = 100 [(search) = {index:true}];
+  // The rule ID used to create the event
+  uint32 signature_id = 101 [(search) = {index:true}];
+  // The version of the rule
+  uint32 signature_revision = 102 [(search) = {index:true}];
+  // The policy ID (snort based NIDS)
+  uint32 policy_id = 103 [(search) = {index:true}];
+  // Title of the event
+  string message = 104 [(search) = {index:true}];
+  // event classification from classifications.conf (snort based NIDS)
+  string classification = 105 [(search) = {index:true}];
+  // Priority placed on the event by the normalizer (based of vendor scale) where 1 is the highest priority and 5 is the lowest.
+  uint32 priority = 106 [(search) = {index:true}];
+  // How the packet was handled. Possibly DROP, SDROP, REJECT, ALERT, FW_TRUSTED, ...
+  string action = 107 [(search) = {index:true}];
+  // Supercedes action
+  uint32 impact_flag = 108 [(search) = {index:true}];
+  // Deprecated in lieu of
+  uint32 impact = 109 [(search) = {index:true}];
+  // 1=NotBlocked, 2=Blocked, 3=WouldHaveBlocked
+  uint32 blocked = 110 [(search) = {index:true}];
+  // The extracted vlan id from the vlan header in the alerting packet
+  uint32 vlan = 111 [(search) = {index:true}];
+  // The extracted mpls label from the mpls header in the alerting packet
+  uint32 mpls_label = 112 [(search) = {index:true}];
+  // ID of the alerting device
+  uint32 snort_sensor_id = 113 [(search) = {index:true}];
+  // ID of the event assigned by the sensor
+  uint32 event_id = 114 [(search) = {index:true}];
+  // Reference to another event_id being part of the conversation
+  uint32 event_ref = 115 [(search) = {index:true}];
+  // @inject_tag: validate:"ip"
+  // IP source address
+  string source_address = 116 [(search) = {index:true group:true type:IP groupName:"source_address_port"}];
+  // @inject_tag: validate:"ip"
+  // IP destination address
+  string destination_address = 117 [(search) = {index:true group:true type:IP groupName:"destination_address_port"}];
+  // @inject_tag: validate:"lt=65536"
+  // TCP/UDP source port when protocol == 6||17
+  uint32 source_port = 118 [(search) = {index:true group:true type:PORT groupName:"source_address_port"}];
+  // Type of ICMP event when protocol == 1
+  uint32 icmp_type = 119 [(search) = {index:true}];
+  // @inject_tag: validate:"lt=65536"
+  // TCP/UDP source port when protocol == 6||17
+  uint32 destination_port = 120 [(search) = {index:true group:true type:PORT groupName:"destination_address_port"}];
+  // ICMP code when protocol == 99
+  uint32 icmp_code = 121 [(search) = {index:true}];
+  // IP protocol number
+  uint32 protocol = 122 [(search) = {index:true}];
+  // IP packet time-to-live
+  uint32 ttl = 123 [(search) = {index:true}];
+  // IP packet type-of-service flags
+  string tos = 124 [(search) = {index:true}];
+  // IP packet identifier
+  uint32 packet_id = 125 [(search) = {index:true}];
+  // Length of the alerting packet's IP header
+  uint32 ip_len = 126 [(search) = {index:true}];
+  // Packet datagram length for UDP packets
+  uint32 dgm_len = 127 [(search) = {index:true}];
+  // TCP flags ala tcpdump format string
+  string flags = 128 [(search) = {index:true}];
+  // TCP sequence of alerting packet
+  string sequence = 129 [(search) = {index:true}];
+  // The TCP ACK
+  string ack = 130 [(search) = {index:true}];
+  // The size of the receive window
+  string window = 131 [(search) = {index:true}];
+  // Size of the TCP packet
+  uint32 tcp_len = 132 [(search) = {index:true}];
+  // String formatted TCP options
+  string tcp_options = 133 [(search) = {index:true}];
+  // All packets associated with the alert. Base64-encoded and suitable for use
+  // (after decoding) with tcpdump, wireshark, et.al.
+  bytes pcap = 134 [(search) = {}];
+  // When pcap field is not present, provide a text string explaining on how to obtain the pcap.
+  // Example "REST QUERY <IP> with <PATH> having <arguments>"
+  string pcapref = 135 [(search) = {}];
+  // The username associated with the source.
+  string source_username = 136 [(search) = {index:true type:USERNAME}];
+  // Standardized format for source_username
+  UserPart source_user = 146 [(search) = {index:true}];
+  // The username associated with the destination.
+  string destination_username = 137 [(search) = {index:true type:USERNAME}];
+  // Standardized format for destination_username
+  UserPart destination_user = 147 [(search) = {index:true}];
+  // Application detected by Deep Packet Inspection engine.
+  string application_name = 138 [(search) = {}];
+  // Boolean value to indicate whether the underlying detection logic is authored by the vendor (false), or an end user (true)
+  NullableBoolean is_custom_alert = 144 [(search) = {index:true}];
+  // The X-Forwarded-For request header; Identifies the originating IP address of a client connecting to a web server through an HTTP proxy or load balancer.
+  repeated string x_forwarded_for = 145 [(search) = {index:true type:IP}];
+
+  enum Direction {
+    // unused but required for proto3
+    UNKNOWN = 0;
+    // When you have a flow to/from the security control itself.
+    // Receive
+    INBOUND = 1;
+    // Send
+    OUTBOUND = 2;
+
+    // When you get a flow from a security control inspecting a flow from point A to B.
+    // The security control is not apart of the conversation, just an observer.
+    // The security control only know who is the initiator (client) of the connection and who is the receiver (server).
+    CLIENT_TO_SERVER = 3;
+    SERVER_TO_CLIENT = 4;
+  }
+
+  // Direction of the network traffic between the source and destination from the perspective of the sensor.
+  Direction direction = 139 [(search) = {index:true}];
+  // The extra data provided by NIDS alert to provide context. (file/url triggered on, etc)
+  map<string,string> vendor_extra_context = 140 [deprecated=true];
+
+  // event_metadata can be provided by the appliance to add context, such as url/filename triggered on, BETTER schema information, etc)
+  KeyValuePairsIndexed event_metadata = 141;
+
+  enum author {
+    DEFAULT_ORIGIN = 0; // unused but required for proto3
+    VENDOR_OF_SENSOR = 1; // Whoever manufactured the sensortType is the author of this nids countermeasure.
+    SCWX_CTU = 2; // Denotes that the nids countermeasure is from SecureWork's Counter Threat Unit.
+    EMERGING_THREATS = 3; // Denotes a countermeasure from https://rules.emergingthreats.net/.
+  }
+  // countermeasure_author tells you who might have authored the event captured in the nids alert.
+  author countermeasure_author = 142 [(search) = {index:true}];
+  //Vendor provided definition of the log type
+  string log_type = 143 [(search) = {index:true}];
+
+  /*** Enrichments */
+  // Provides the names of blacklists matched by the source
+  repeated string src_ipblacklists = 150 [(search) = {index:true}];
+  // Provides the names of blacklists matched by the source
+  repeated string dest_ipblacklists = 151 [(search) = {index:true}];
+
+  // The geographic location of the source IP
+  GeoSummary src_ipgeo_summary = 160;
+  // The geographic location of the destination IP
+  GeoSummary dest_ipgeo_summary = 161;
+
+  message ThreatIntelligenceIndicators {
+    // Type of TI, e.g. IP address, Email address, url, hash, malware etc
+    string type = 1 [(search) = {index:true}];
+    // Raw value of the TI indicator, e.g. (1.1.1.1, FAKEURL.COM may be available for sale or other proposals )
+    string value = 2 [(search) = {index:true}];
+    // Category of the TI provided by the threat identifier, representing a grouping based on shared characteristics or attributes of the threat indicators, facilitating the organization and understanding of the types of threats.
+    string category = 3 [(search) = {index:true}];
+    // Timestamp related to when TI  last curated.
+    uint64 last_observation_time_usec = 4;
+    // Human readable source if the TI data, e.g. “Microsoft TIC”
+    string source = 5 [(search) = {index:true}];
+    // URL that provides information about the TI
+    string source_url = 6;
+    // Provider-generated malware family (for example, 'wannacry', 'notpetya', etc.).
+    string family = 7 [(search) = {index:true}];
+    // Classification of the TI provided by the threat identifier, referring to the systematic arrangement in classes or groups based on established criteria, which aids in the assignment of threat indicators to specific classes within a classification system, reflecting their severity, urgency, or potential impact.
+    string classification = 8 [(search) = {index:true}];
+  }
+
+  //Details related to  threat intelligence indicators (category, last observed date, source, source url, type e.t.c
+  repeated ThreatIntelligenceIndicators threat_intelligence_indicators = 170;
+
+  // Hashing value(s) of file contents from the NIDS event
+  repeated FileHash file_hash = 180 [(search) = {index:true group:true}];
+  // Just the filename(s) without the leading directory path from the NIDS events
+  repeated string base_filename = 181 [(search) = {index:true}];
+}

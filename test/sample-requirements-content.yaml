@@ -1,0 +1,35 @@
+# Sample content for requirements output generation.
+# Keys must match section ids in requirements-spec.yaml: description, acceptance_criteria
+#
+# Description can be a string OR an object with body and optional examples:
+#   description:
+#     body: |
+#       Main description text...
+#     examples:
+#       - label: "Example 1"
+#         text: "from nids where ..."
+#       - "Or a simple string example"
+#
+# Usage:
+#   python src/generate_requirements_output.py --content test/sample-requirements-content.yaml
+
+description:
+  body: |
+    The system shall support search variables in CQL so that users can
+    parameterize queries (e.g. time range, sensor IDs, CIDR sets) and
+    reuse the same query with different bindings without editing the
+    query text.
+  examples:
+    - label: "NIDS by sensor and time"
+      text: "from nids where sensor_type = $SENSOR_TYPE earliest = $EARLIEST"
+    - label: "NIDS sort by field variable"
+      text: "from nids where sensor_type = $SENSOR_TYPE earliest = $EARLIEST | sort $SORT_FIELD $SORT_ORDER"
+    - "from nids where $FILTER_FIELD = $FILTER_VALUE earliest = $EARLIEST"
+
+acceptance_criteria:
+  - id: ac-1
+    statement: "User can define a set of values for a variable (e.g. a list of CIDRs or sensor IDs)."
+  - id: ac-2
+    statement: "User can reference variables in the search clause by name (e.g. $EARLIEST, $PRIVATE_CIDRS)."
+  - id: ac-3
+    statement: "Generated or executed query substitutes variable references with the bound values."
