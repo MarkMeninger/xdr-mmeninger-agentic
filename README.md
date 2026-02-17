@@ -6,7 +6,7 @@ Original requirements from CSM meeting to support homenet variables for use in r
 
 CSMs manually create hundreds of reports showing directional traffic for customers using complex search queries.
 
-Variables would allow new reports to be generated that could be re-used across all sensors saving hundreds of CSM hours and solve a business need asked by all iSensor customers.
+Variable support in CQL would allow new reports to be generated that could be re-used across all sensors saving hundreds of CSM hours and solve a business need asked by all iSensor customers.
 
 ## Cursor Opportunity
 
@@ -22,7 +22,7 @@ Provide an MVP deliverable that would have Claude examine all artifacts to creat
 **Data** contains
 
 - **A) Taegis-Docs:** Source files from Taegis docs teams for several CQL functionality areas used to train the LLM.
-- **B) Requirements gathering content:** Contains all the inputs for creating the output requirements.
+- **B) Requirements gathering content:** Contains all the requirement input.
 - **C) Competitive:** Holds references to similar capability in SIEMs with variable support. I thought about passing this to Claude but ended up not needing to.
 - **D) Taegis-Schemas:** Holds the NIDS protobuf schema definition file.
 
@@ -53,5 +53,5 @@ This folder was used to hold outputs from the LLM so I could evaluate quality an
 4. **TODOs**
    - **a)** Automate access to source code vs my download and paste locally. Would be much faster.
    - **b)** Build hooks into the source code to have Claude give me guidance on effort and feasibility. T-shirt sized project and why.
-   - **c)** Re-usable workbench: refactor my work to have a reusable Claude workbench that I can re-use across projects. This is hard-coded.
+   - **c)** Re-usable workbench: refactor my work to have a reusable Claude workbench that I can re-use across projects. This is hard-coded to this specific Search use-case.
    - **d)** Create hooks into Jira and other tools to automate my requirements definition.
