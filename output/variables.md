@@ -1,6 +1,6 @@
 ### Search Variables (Sample)
 
-CQL search variables allow users to parameterize queries with placeholders such as `$EARLIEST`, `$SENSOR_TYPE`, and `$FILTER_FIELD`. Variables are substituted with bound values before execution.
+ASQL search variables allow users to parameterize queries with placeholders such as `$EARLIEST`, `$SENSOR_TYPE`, and `$FILTER_FIELD`. Variables are substituted with bound values before execution.
 
 General form: `search_query_with_$VARIABLE_NAMES`
 
