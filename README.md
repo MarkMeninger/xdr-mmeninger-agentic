@@ -24,7 +24,7 @@ Provide an MVP deliverable that would have Claude examine all artifacts to creat
 - **A) Taegis-Docs:** Source files from Taegis docs teams for several CQL functionality areas used to train the LLM.
 - **B) Requirements gathering content:** Contains all the requirement input.
 - **C) Competitive:** Holds references to similar capability in SIEMs with variable support. I thought about passing this to Claude but ended up not needing to.
-- **D) Taegis-Schemas:** Holds the NIDS protobuf schema definition file.
+- **D) Taegis-Schemas:** Holds the NIDS protobuf schema definition file. I used this for context and Claude used this to generate examples for the new Search variable capability.
 
 **Learning**
 
@@ -32,7 +32,11 @@ Contains KT (knowledge transfer) items from the LLM to me that I want to keep re
 
 **Output**
 
-Contains the artifacts that I would manually generate as part of my job.
+Contains the artifacts that I would manually generate as part of my job. For the purposes of this project the relevant docs are
+
+* cql-variable-support-requirements.txt -> Epic content
+* release-notes.text -> Self explanatory
+* variables.md -> User-guide content for the new Variable feature sent to Daniel or Lee
 
 **Src**
 
