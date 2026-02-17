@@ -2,7 +2,7 @@
 
 ## Business Objectives
 
-Original requirements from CSM meeting to support homenet variables for use in reports across all iSensors.
+Original requirements from CSM meeting to support variables for use in traffic directionality reports across all iSensors.
 
 CSMs manually create hundreds of reports showing directional traffic for customers using complex search queries.
 
