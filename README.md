@@ -1,4 +1,4 @@
-# Cursor Project: Create Variable CQL Requirements and related artifacts
+# Cursor Project: Create Variable Advanced Search Query Language Requirements and related artifacts
 
 ## Business Objectives
 
@@ -6,22 +6,22 @@ Original requirements from CSM meeting to support variables for use in traffic d
 
 CSMs manually create hundreds of reports showing directional traffic for customers using complex search queries.
 
-Variable support in CQL would allow new reports to be generated that could be re-used across all sensors saving hundreds of CSM hours and solve a business need asked by all iSensor customers.
+Variable support in Advanced Search Query Language would allow new reports to be generated that could be re-used across all sensors saving hundreds of CSM hours and solve a business need asked by all iSensor customers.
 
 ## Cursor Opportunity
 
 Provide an MVP deliverable that would have Claude examine all artifacts to create a holistic set of deliverables using
 
 1. Original customer requirements including the query use-cases created today by CSMs for all iSensors to observe sensor traffic.
-2. The NIDS schema which would be the input source into the CQL variables to solve the business problem as well as input into example queries that would be part of the MVP.
-3. Taegis Advanced query user-docs to educate the LLM on CQL syntax and functionality.
+2. The NIDS schema which would be the input source into the Advanced Search Query Language variables to solve the business problem as well as input into example queries that would be part of the MVP.
+3. Taegis Advanced query user-docs to educate the LLM on Advanced Search Query Language syntax and functionality.
 4. Templates for epics, Taegis user docs and release notes to generate the content that can be submitted to the engineering and docs team.
 
 ## Key Folders in this Repo
 
 **Data** contains
 
-- **A) Taegis-Docs:** Source files from Taegis docs teams for several CQL functionality areas used to train the LLM.
+- **A) Taegis-Docs:** Source files from Taegis docs teams for several Advanced Search Query Language functionality areas used to train the LLM.
 - **B) Requirements gathering content:** Contains all the requirement input.
 - **C) Competitive:** Holds references to similar capability in SIEMs with variable support. I thought about passing this to Claude but ended up not needing to.
 - **D) Taegis-Schemas:** Holds the NIDS protobuf schema definition file. I used this for context and Claude used this to generate examples for the new Search variable capability.
@@ -34,7 +34,7 @@ Contains KT (knowledge transfer) items from the LLM to me that I want to keep re
 
 Contains the artifacts that I would manually generate as part of my job. For the purposes of this project the relevant docs are
 
-* cql-variable-support-requirements.txt -> Epic content
+* Advanced Search Query Language-variable-support-requirements.txt -> Epic content
 * release-notes.text -> Self explanatory
 * variables.md -> User-guide content for the new Variable feature sent to Daniel or Lee
 
