@@ -1,6 +1,6 @@
 # Homenet CQL query – variable specification
 
-This document defines the variables used in homenet-cql-query-with-variables.txt so the same query can be reused with
+This document defines the variables used in homenet-asql-query-with-variables.txt so the same query can be reused with
 different bindings (e.g. different time ranges, sensors, or internal networks).
 
 ## Variable list

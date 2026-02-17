@@ -22,7 +22,7 @@ except ImportError:
 SAMPLE_CONTENT = {
     "features": [
         {
-            "title": "CQL Search Variables",
+            "title": "ASQL Search Variables",
             "body": "Queries can now use variables (e.g. $EARLIEST, $SENSOR_TYPE) so users can parameterize and reuse the same query with different bindings.",
         },
         {
@@ -39,7 +39,7 @@ SAMPLE_CONTENT = {
     "docs": [
         {
             "title": "Search Variables (variables.md)",
-            "body": "Documentation for CQL search variables now includes variable syntax, binding rules, and NIDS field name reference. See variables.md in the output folder.",
+            "body": "Documentation for ASQL search variables now includes variable syntax, binding rules, and NIDS field name reference. See variables.md in the output folder.",
         },
     ],
 }

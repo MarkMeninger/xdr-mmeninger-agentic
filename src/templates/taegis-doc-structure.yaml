@@ -1,5 +1,5 @@
 # Template: structure of documentation files in data/taegis-docs
-# Use this when creating or validating Taegis CQL documentation under taegis-docs.
+# Use this when creating or validating Taegis ASQL documentation under taegis-docs.
 
 name: taegis-doc-structure
 version: "1.0"
@@ -33,7 +33,7 @@ structure:
 
   - element: code_block
     indent: 4
-    description: "CQL examples and syntax in 4-space-indented blocks. No fenced code (```) in current docs."
+    description: "ASQL examples and syntax in 4-space-indented blocks. No fenced code (```) in current docs."
 
   - element: callout
     syntax: "!!! Note"

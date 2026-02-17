@@ -1,9 +1,9 @@
 # CQL variable support requirements content.
 # Keys match requirements-spec.yaml: description (body + examples), acceptance_criteria
-# Content transferred from output/cql-variable-examples.txt (field names from nids.proto).
+# Content transferred from output/asql-variable-examples.txt (field names from nids.proto).
 #
 # Usage:
-#   python src/generate_requirements_output.py --content test/cql-variable-support.yaml --output output/test-requirements.txt
+#   python src/generate_requirements_output.py --content test/asql-variable-support.yaml --output output/test-requirements.txt
 
 description:
   body: |

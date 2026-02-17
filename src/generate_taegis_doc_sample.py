@@ -36,7 +36,7 @@ def build_sample_md(structure_spec: dict) -> str:
     lines.append("")
     # Intro paragraph(s)
     lines.append(
-        "CQL search variables allow users to parameterize queries with placeholders such as "
+        "ASQL search variables allow users to parameterize queries with placeholders such as "
         "`$EARLIEST`, `$SENSOR_TYPE`, and `$FILTER_FIELD`. Variables are substituted with bound "
         "values before execution."
     )

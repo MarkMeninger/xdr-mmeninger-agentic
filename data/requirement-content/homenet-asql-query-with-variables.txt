@@ -1,6 +1,6 @@
 // Homenet CQL query - parameterized with search variables for reusability
 // Variables are indicated by $VAR_NAME. Substitute each with the appropriate value set or literal before execution.
-// See homenet-cql-query-variables-spec.txt for variable definitions and example bindings.
+// See homenet-asql-query-variables-spec.txt for variable definitions and example bindings.
 
 FROM nids
 WHERE (
