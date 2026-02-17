@@ -10,7 +10,7 @@ Variable support in CQL would allow new reports to be generated that could be re
 
 ## Cursor Opportunity
 
-Provide an MVP deliverable that would have Claude examine all artifacts to create a holistic set of output requirements using
+Provide an MVP deliverable that would have Claude examine all artifacts to create a holistic set of deliverables using
 
 1. Original customer requirements including the query use-cases created today by CSMs for all iSensors to observe sensor traffic.
 2. The NIDS schema which would be the input source into the CQL variables to solve the business problem as well as input into example queries that would be part of the MVP.
